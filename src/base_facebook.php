@@ -192,6 +192,13 @@ abstract class BaseFacebook
    * @var string
    */
   protected $accessToken = null;
+  
+  /**
+   * the expire access token timestamp
+   *
+   * @var int
+   */
+  protected $expire = null;
 
   /**
    * Indicates if the CURL based @ syntax for file uploads is enabled.
@@ -355,6 +362,29 @@ abstract class BaseFacebook
 
     return $this->accessToken;
   }
+  
+  /**
+   * If there is an access token, it has an expires timestamp.
+   *
+   * @return int The expires timestamp
+   */
+  public function getExpire() {
+    if ($this->expire !== null) {
+      // we've done this already and cached it.  Just return.
+      return $this->expire;
+    }
+
+    $expire = $this->getPersistentData('access_token_expires');
+    if(!$expire){
+        //@todo do something #ornot
+    }else{
+        $this->expire = $expire;
+    }
+    
+    return $expire;
+  }
+  
+  
 
   /**
    * Determines and returns the user access token, first using
